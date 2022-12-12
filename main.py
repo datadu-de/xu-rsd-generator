@@ -4,6 +4,9 @@ import json
 import xml
 
 import requests
+from dotenv import load_dotenv
+
+load_dotenv(".env")
 
 XU_BASE_URL = "http://localhost:8065/"
 RSD_TEMPLATE = "TEMPLATE.rsd"
@@ -11,6 +14,7 @@ RSD_TARGET_FOLDER = "."
 
 
 def get_extractions():
+
     res = requests.get(XU_BASE_URL)
     f = io.StringIO(res.text)
     extractions = csv.DictReader(f, delimiter=",")
@@ -19,10 +23,11 @@ def get_extractions():
 
 
 def generate_rsd(extraction):
-    
+    pass
 
 
 def main():
+
     extractions = get_extractions()
 
     for e in extractions:
