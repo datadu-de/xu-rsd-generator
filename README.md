@@ -29,7 +29,7 @@ Your machine should have
 
 ### Installing
 
-1. Download and extract this repository to a local folder.
+1. Download and extract this repository to a local folder (or use `git clone` to create a local copy)
 2. Open a command window in the folder
 3. Create a Python environment
    ```
