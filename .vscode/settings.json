@@ -4,12 +4,8 @@
     "markdown.extension.toc.levels": "2..6",
     "markdown.extension.toc.orderedList": true,
     "markdown.extension.toc.omittedFromToc": {
-<<<<<<< HEAD
         "README.md": [
             "## Table of Contents"
         ]
-=======
-        "README.md": ["## Table of Contents"]
->>>>>>> 04bcdd011ddd2dcb00cff8991e8dd2635820cf04
     }
 }
