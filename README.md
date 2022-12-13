@@ -47,7 +47,7 @@ Your machine should have
    ```
    pip install -r requirements.txt
    ```
-6. Copy or rename ".env.example" to ".env"
+6. Copy or rename `.env.example` to `.env
 7. Adjust parameters
    - `XU_BASE_URL` - point to the root endpoint of your Xtract Universal installation
    - `RSD_TARGET_FOLDER` - point to the folder where your RSD files should be created
