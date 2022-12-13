@@ -9,8 +9,6 @@ from dotenv import load_dotenv
 
 load_dotenv(".env")
 
-required_env_variables = ["XU_BASE_URL", "RSD_TEMPLATE", "RSD_TARGET_FOLDER"]
-
 XU_BASE_URL = os.getenv("XU_BASE_URL")
 RSD_TEMPLATE = os.getenv("RSD_TEMPLATE")
 RSD_TARGET_FOLDER = os.getenv("RSD_TARGET_FOLDER")
