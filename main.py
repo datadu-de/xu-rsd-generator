@@ -17,11 +17,16 @@ log = logging.getLogger()
 log.setLevel(logging.INFO)
 
 
-# supoprted datatypes by CData:
+# supoprted data types by CData:
 # string, int, double, datetime, and boolean
 #
-# https://cdn.cdata.com/help/DWH/ado/pg_APIinfo.htm#attr
-
+# data types by Xtract Universal:
+# Byte, Short, Int, Long, Double, Decimal, NumericString, StringLengthMax,
+# StringLengthUnknown, ByteArrayLengthExact, ByteArrayLengthMax,
+# ByteArrayLengthUnknown, Date, ConvertedDate, Time
+#
+# <https://cdn.cdata.com/help/DWH/ado/pg_APIinfo.htm#attr>
+# <https://help.theobald-software.com/en/xtract-universal/advanced-techniques/metadata-access-via-http-json#result-columns-of-an-extraction>
 
 TYPE_MAPPING = {
     "Byte": "int",
