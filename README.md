@@ -26,7 +26,7 @@ From TimeXtender with :chart_with_upwards_trend:, :brain: & :heart:
 
 Your machine should have
 
-- Xtract Universal installed
+- access to Xtract Universal (can be installed on the same machine, or on another reachable machine)
 - At least one **SAP source** configured in Xtract Universal
 - At least one **extraction** configured in Xtract Universal
 - [Python 3](https://www.python.org/downloads/) installed
