@@ -16,6 +16,8 @@ To make the [extractions](https://help.theobald-software.com/en/xtract-universal
 
 This RSD-generator helps to make the process of generating these RSD files easier - by reading the metadata provided by Xtract Universal and enhancing a given rsd template with the schema metadata.
 
+![Xtract Universal integration with TimeXtender ODX schematic](docs/assets/Xtract-Universal-with-TimeXtender-ODX-integration.png)
+
 From TimeXtender with :chart_with_upwards_trend:, :brain: & :heart:
 
 ## Getting Started
