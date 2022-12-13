@@ -155,9 +155,6 @@ def main():
     extractions = get_extractions()
 
     for e in extractions:
-
-        print(e)
-
         generate_rsd(e)
 
 
