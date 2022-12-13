@@ -59,7 +59,6 @@ def get_extractions():
 
 def get_column_list(extraction_name):
 
-    # meta_url = f"{XU_BASE_URL}/metadata/?name={extraction_name}"
     # http://localhost:8065/config/extractions/VBAK/result-columns
     meta_url = (
         f"{XU_BASE_URL}/config/extractions/{extraction_name}/result-columns"  # NOQA
