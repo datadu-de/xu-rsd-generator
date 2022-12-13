@@ -1,4 +1,4 @@
-# RSD file generator for Xtract Universal (to be used with TimeXtender)
+# RSD file generator for Xtract Universal
 
 ## Table of Contents
 
