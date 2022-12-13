@@ -90,7 +90,7 @@ def generate_rsd(extraction):
         ET.register_namespace(k, v)
 
     # set extraction URL
-    template_tree.find("//api:set[@attr='URI']", namespaces=namespaces).attrib[
+    template_tree.find("//api:set[@attr='URI']", namespaces).attrib[
         "value"
     ] = extraction_url
 
