@@ -76,7 +76,7 @@ def generate_rsd(extraction):
 
     extraction_name = extraction.get("name")
     target_file_name = Path(RSD_TARGET_FOLDER, extraction_name + ".rsd")
-    extraction_url = f"{XU_BASE_URL}/?name={extraction_name}" + r"&destination=http-json"
+    extraction_url = f"{XU_BASE_URL}/?name={extraction_name}&destination=http-json"
 
     # read template RSD
     template_tree = ET.parse(RSD_TEMPLATE)
