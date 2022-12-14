@@ -36,17 +36,23 @@ Your machine should have
 1. Download and extract this repository to a local folder (or use `git clone` to create a local copy)
 2. Open a command window in the folder
 3. Create a Python environment
-   ```
+
+   ```cmd
    python -m venv .venv
    ```
+
 4. Activate the Python environment
-   ```
+
+   ```cmd
    .\.venv\scripts\activate
    ```
+
 5. Install required Python packages (`requests` & `python-dotenv`)
-   ```
+
+   ```cmd
    pip install -r requirements.txt
    ```
+
 6. Copy or rename `.env.example` to `.env`
 7. Adjust parameters in `.env` file:
    - `XU_BASE_URL` - point to the root endpoint of your Xtract Universal installation
@@ -56,6 +62,6 @@ Your machine should have
 
 ## Usage
 
-```
+```cmd
 python.exe main.py
 ```
