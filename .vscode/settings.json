@@ -7,5 +7,13 @@
         "README.md": [
             "## Table of Contents"
         ]
-    }
+    },
+    "python.linting.flake8Args": [
+        "--max-line-length=119",
+        "--ignore=E402,F841,F401,E302,E305",
+    ],
+    "python.formatting.blackArgs": [
+        "--line-length",
+        "119"
+    ]
 }

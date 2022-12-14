@@ -63,9 +63,7 @@ def get_extractions():
 def get_column_list(extraction_name):
 
     # http://localhost:8065/config/extractions/VBAK/result-columns
-    meta_url = (
-        f"{XU_BASE_URL}/config/extractions/{extraction_name}/result-columns"  # NOQA
-    )
+    meta_url = f"{XU_BASE_URL}/config/extractions/{extraction_name}/result-columns"  # NOQA
 
     res = requests.get(meta_url)
     content = res.content.decode(res.apparent_encoding)
@@ -78,9 +76,7 @@ def generate_rsd(extraction):
 
     extraction_name = extraction.get("name")
     target_file_name = Path(RSD_TARGET_FOLDER, extraction_name + ".rsd")
-    extraction_url = (
-        f"{XU_BASE_URL}/?name={extraction_name}" + r"&destination=http-json"
-    )
+    extraction_url = f"{XU_BASE_URL}/?name={extraction_name}" + r"&destination=http-json"
 
     # read template RSD
     template_tree = ET.parse(RSD_TEMPLATE)
@@ -95,9 +91,7 @@ def generate_rsd(extraction):
         ET.register_namespace(k, v)
 
     # set extraction URL
-    template_tree.find("//api:set[@attr='URI']", namespaces).attrib[
-        "value"
-    ] = extraction_url
+    template_tree.find("//api:set[@attr='URI']", namespaces).attrib["value"] = extraction_url
 
     # prepare field section to look like this:
     # <api:info title="BSEG" desc="Generated schema file."
@@ -105,9 +99,7 @@ def generate_rsd(extraction):
     field_section = template_tree.find("//api:info", namespaces)
     field_section.clear()
     field_section.attrib["title"] = extraction_name
-    field_section.attrib[
-        "desc"
-    ] = f"""Type: {extraction.get("type")}, Source: {extraction.get("source")}"""  # NOQA
+    field_section.attrib["desc"] = f"Type: {extraction.get('type')}, Source: {extraction.get('source')}"  # NOQA
 
     field_section.attrib["xmlns:other"] = "http://apiscript.com/ns?v1"
 
