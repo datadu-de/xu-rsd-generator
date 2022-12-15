@@ -181,8 +181,10 @@ def generate_rsd(extraction, forceHttpJson=False):
 
     try:
         ET.indent(template_tree)
-    except:
-        pass
+    except AttributeError as e:
+        logging.warning(
+            f"""Could not apply XML intendation to "{target_file_name}". (only available with Python >= 3.9)"""
+        )
 
     target_file_name.parent.mkdir(parents=True, exist_ok=True)
 
