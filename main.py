@@ -1,20 +1,20 @@
-import os
 import json
 import logging
+import os
+import typing
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
 import requests
 from dotenv import load_dotenv
 
+logging.basicConfig(filename="debug.log", filemode="w", level=logging.DEBUG)
+
 load_dotenv(".env")
 
 XU_BASE_URL = os.getenv("XU_BASE_URL")
 RSD_TEMPLATE = os.getenv("RSD_TEMPLATE")
 RSD_TARGET_FOLDER = os.getenv("RSD_TARGET_FOLDER")
-
-log = logging.getLogger()
-log.setLevel(logging.INFO)
 
 
 # supoprted data types by CData:
@@ -27,7 +27,6 @@ log.setLevel(logging.INFO)
 #
 # <https://cdn.cdata.com/help/DWH/ado/pg_APIinfo.htm#attr>
 # <https://help.theobald-software.com/en/xtract-universal/advanced-techniques/metadata-access-via-http-json#result-columns-of-an-extraction>
-
 TYPE_MAPPING = {
     "Byte": "int",
     "Short": "int",
@@ -47,13 +46,57 @@ TYPE_MAPPING = {
 }
 
 
-def get_extractions():
+# destination types available in Xtract Universal
+# <https://help.theobald-software.com/en/xtract-universal/advanced-techniques/metadata-access-via-http-json#list-of-extractions-with-a-specific-destination-type>
+DESTINATION_TYPES = typing.Literal[
+    "Unknown",
+    "Alteryx",
+    "AlteryxConnect",
+    "AzureDWH",
+    "AzureBlob",
+    "CSV",
+    "DB2",
+    "EXASOL",
+    "FileCSV",
+    "FileJSON",
+    "GoodData",
+    "GoogleCloudStorage",
+    "HANA",
+    "HTTPJSON",
+    "MicroStrategy",
+    "MySQL",
+    "ODataAtom",
+    "Oracle",
+    "Parquet",
+    "PostgreSQL",
+    "PowerBI",
+    "PowerBIConnector",
+    "Qlik",
+    "Redshift",
+    "S3Destination",
+    "Salesforce",
+    "SharePoint",
+    "Snowflake",
+    "SQLServer",
+    "SqlServerReportingServices",
+    "Tableau",
+    "Teradata",
+    "Vertica",
+]
+
+
+def get_extractions(filterDestionationType: DESTINATION_TYPES = None):
 
     meta_url = f"{XU_BASE_URL}/config/extractions/"
 
+    if filterDestionationType is not None and filterDestionationType in DESTINATION_TYPES:
+        params = {"destinationType": filterDestionationType}
+    else:
+        params = {}
+
     logging.info(f"{meta_url=}")
 
-    res = requests.get(meta_url)
+    res = requests.get(meta_url, params=params)
     content = res.content.decode(res.apparent_encoding)
     extractions = json.loads(content).get("extractions")
 
@@ -65,6 +108,8 @@ def get_column_list(extraction_name):
     # http://localhost:8065/config/extractions/VBAK/result-columns
     meta_url = f"{XU_BASE_URL}/config/extractions/{extraction_name}/result-columns"
 
+    logging.info(f"{meta_url=}")
+
     res = requests.get(meta_url)
     content = res.content.decode(res.apparent_encoding)
     columns = json.loads(content).get("columns")
@@ -72,20 +117,16 @@ def get_column_list(extraction_name):
     return columns
 
 
-def generate_rsd(extraction):
+def generate_rsd(extraction, forceHttpJson: bool = False):
 
     extraction_name = extraction.get("name")
     target_file_name = Path(RSD_TARGET_FOLDER, extraction_name + ".rsd")
-    extraction_url = f"{XU_BASE_URL}/?name={extraction_name}" + r"&destination=http-json"
+    extraction_url = f"""{XU_BASE_URL}/?name={extraction_name}{"&destination=http-json" if forceHttpJson else ""}"""
 
     # read template RSD
     template_tree = ET.parse(RSD_TEMPLATE)
 
-    namespaces = {
-        "api": "http://apiscript.com/ns?v1",
-        "xs": "http://www.w3.org/2001/XMLSchema",
-        # "other": "http://apiscript.com/ns?v1",
-    }
+    namespaces = {"api": "http://apiscript.com/ns?v1", "xs": "http://www.w3.org/2001/XMLSchema"}
 
     for k, v in namespaces.items():
         ET.register_namespace(k, v)
@@ -137,6 +178,8 @@ def generate_rsd(extraction):
     # restore xs namespace due to malformed XML structure of RSD format
     template_tree.getroot().attrib["xmlns:xs"] = namespaces.get("xs")
 
+    ET.indent(template_tree)
+
     target_file_name.parent.mkdir(parents=True, exist_ok=True)
 
     template_tree.write(
@@ -146,7 +189,8 @@ def generate_rsd(extraction):
 
 def main():
 
-    extractions = get_extractions()
+    # set filterDestionationType to None to create RSD for *all* extractions
+    extractions = get_extractions(filterDestionationType="HTTPJSON")
 
     for e in extractions:
         generate_rsd(e)
