@@ -85,7 +85,7 @@ DESTINATION_TYPES = typing.Literal[
 ]
 
 
-def get_extractions(filterDestionationType: DESTINATION_TYPES = None):
+def get_extractions(filterDestionationType: DESTINATION_TYPES = None) -> list[dict]:
 
     meta_url = f"{XU_BASE_URL}/config/extractions/"
 
@@ -103,7 +103,7 @@ def get_extractions(filterDestionationType: DESTINATION_TYPES = None):
     return extractions
 
 
-def get_column_list(extraction_name):
+def get_column_list(extraction_name: str) -> list[dict]:
 
     # http://localhost:8065/config/extractions/VBAK/result-columns
     meta_url = f"{XU_BASE_URL}/config/extractions/{extraction_name}/result-columns"
@@ -117,7 +117,7 @@ def get_column_list(extraction_name):
     return columns
 
 
-def generate_rsd(extraction, forceHttpJson: bool = False):
+def generate_rsd(extraction: dict, forceHttpJson: bool = False) -> None:
 
     extraction_name = extraction.get("name")
     target_file_name = Path(RSD_TARGET_FOLDER, extraction_name + ".rsd")
@@ -140,7 +140,7 @@ def generate_rsd(extraction, forceHttpJson: bool = False):
     field_section = template_tree.find("//api:info", namespaces)
     field_section.clear()
     field_section.attrib["title"] = extraction_name
-    field_section.attrib["desc"] = f"Type: {extraction.get('type')}, Source: {extraction.get('source')}"
+    field_section.attrib["desc"] = f"""Type: {extraction.get("type")}, Source: {extraction.get("source")}"""
 
     field_section.attrib["xmlns:other"] = "http://apiscript.com/ns?v1"
 
