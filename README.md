@@ -65,3 +65,6 @@ Your machine should have
 ```cmd
 .\.venv\scripts\python.exe main.py
 ```
+
+or alternatively execute `run.bat` in a command window within the folder.
+
