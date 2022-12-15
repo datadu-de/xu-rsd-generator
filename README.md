@@ -50,7 +50,7 @@ Your machine should have
 5. Install required Python packages (`requests` & `python-dotenv`)
 
    ```cmd
-   pip install -r requirements.txt
+   .\.venv\scripts\pip install -r requirements.txt
    ```
 
 6. Copy or rename `.env.example` to `.env`
@@ -63,5 +63,8 @@ Your machine should have
 ## Usage
 
 ```cmd
-python.exe main.py
+.\.venv\scripts\python.exe main.py
 ```
+
+or alternatively execute `run.bat` in a command window within the folder.
+
