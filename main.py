@@ -179,7 +179,10 @@ def generate_rsd(extraction, forceHttpJson=False):
     # restore xs namespace due to malformed XML structure of RSD format
     template_tree.getroot().attrib["xmlns:xs"] = namespaces.get("xs")
 
-    ET.indent(template_tree)
+    try:
+        ET.indent(template_tree)
+    except:
+        pass
 
     target_file_name.parent.mkdir(parents=True, exist_ok=True)
 
