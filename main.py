@@ -11,9 +11,11 @@ logging.basicConfig(filename="debug.log", filemode="w", level=logging.DEBUG)
 
 load_dotenv(".env")
 
-XU_BASE_URL = os.getenv("XU_BASE_URL")
-RSD_TEMPLATE = os.getenv("RSD_TEMPLATE")
-RSD_TARGET_FOLDER = os.getenv("RSD_TARGET_FOLDER")
+XU_BASE_URL = os.getenv("XU_BASE_URL", "http://localhost:8065")
+RSD_TEMPLATE = os.getenv("RSD_TEMPLATE", "TEMPLATE.rsd")
+RSD_TARGET_FOLDER = os.getenv("RSD_TARGET_FOLDER", "./OUTPUT")
+FILTER_DESTINATION_TYPE = os.getenv("FILTER_DESTINATION_TYPE", "HTTPJSON")
+FORCE_HTTP_JSON_DESTINATION = os.getenv("FORCE_HTTP_JSON_DESTINATION", "False") == "True"
 
 
 # supoprted data types by CData:
@@ -189,10 +191,10 @@ def generate_rsd(extraction, forceHttpJson=False):
 def main():
 
     # set filterDestionationType to None to create RSD for *all* extractions
-    extractions = get_extractions(filterDestionationType="HTTPJSON")
+    extractions = get_extractions(filterDestionationType=FILTER_DESTINATION_TYPE)
 
     for e in extractions:
-        generate_rsd(e)
+        generate_rsd(e, forceHttpJson=FORCE_HTTP_JSON_DESTINATION)
 
 
 if __name__ == "__main__":
