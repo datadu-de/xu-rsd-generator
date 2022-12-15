@@ -133,12 +133,12 @@ def generate_rsd(extraction, forceHttpJson=False):
         ET.register_namespace(k, v)
 
     # set extraction URL
-    template_tree.find("//api:set[@attr='URI']", namespaces).attrib["value"] = extraction_url
+    template_tree.find(".//api:set[@attr='URI']", namespaces).attrib["value"] = extraction_url
 
     # prepare field section to look like this:
     # <api:info title="BSEG" desc="Generated schema file."
     #      xmlns:other="http://apiscript.com/ns?v1">
-    field_section = template_tree.find("//api:info", namespaces)
+    field_section = template_tree.find(".//api:info", namespaces)
     field_section.clear()
     field_section.attrib["title"] = extraction_name
     field_section.attrib["desc"] = f"""Type: {extraction.get("type")}, Source: {extraction.get("source")}"""
