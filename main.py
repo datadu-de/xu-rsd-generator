@@ -101,6 +101,8 @@ def get_extractions(filterDestionationType=None):
     content = res.content.decode(res.apparent_encoding)
     extractions = json.loads(content).get("extractions")
 
+    logging.debug(extractions)
+
     return extractions
 
 
@@ -128,6 +130,8 @@ def get_parameters(extraction_name):
     res = requests.get(meta_url)
     content = res.content.decode(res.apparent_encoding)
     parameters = json.loads(content).get("custom")
+
+    logging.debug(parameters)
 
     return parameters
 
