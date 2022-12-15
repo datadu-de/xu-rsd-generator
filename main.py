@@ -15,7 +15,7 @@ XU_BASE_URL = os.getenv("XU_BASE_URL", "http://localhost:8065")
 RSD_TEMPLATE = os.getenv("RSD_TEMPLATE", "TEMPLATE.rsd")
 RSD_TARGET_FOLDER = os.getenv("RSD_TARGET_FOLDER", "./OUTPUT")
 FILTER_DESTINATION_TYPE = os.getenv("FILTER_DESTINATION_TYPE", "HTTPJSON")
-FORCE_HTTP_JSON_DESTINATION = os.getenv("FORCE_HTTP_JSON_DESTINATION", "False") == "True"
+FORCE_HTTP_JSON_DESTINATION = os.getenv("FORCE_HTTP_JSON_DESTINATION", "False").lower() in ("true", "1")
 
 
 # supoprted data types by CData:
