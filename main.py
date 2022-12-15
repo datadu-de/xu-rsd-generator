@@ -118,6 +118,20 @@ def get_column_list(extraction_name):
     return columns
 
 
+def get_parameters(extraction_name):
+
+    # http://localhost:8065/config/extractions/plants/parameters/
+    meta_url = f"{XU_BASE_URL}/config/extractions/{extraction_name}/parameters"
+
+    logging.info(f"{meta_url=}")
+
+    res = requests.get(meta_url)
+    content = res.content.decode(res.apparent_encoding)
+    parameters = json.loads(content).get("custom")
+
+    return parameters
+
+
 def generate_rsd(extraction, forceHttpJson=False):
 
     extraction_name = extraction.get("name")
@@ -175,6 +189,12 @@ def generate_rsd(extraction, forceHttpJson=False):
                 attributes,
             )
         )
+
+    # to be implemented for sliding window automation
+    # parameters = get_parameters(extraction_name)
+
+    # if parameters is not None:
+    #     pass
 
     # restore xs namespace due to malformed XML structure of RSD format
     template_tree.getroot().attrib["xmlns:xs"] = namespaces.get("xs")
