@@ -1,7 +1,6 @@
 import json
 import logging
 import os
-import typing
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
@@ -48,7 +47,7 @@ TYPE_MAPPING = {
 
 # destination types available in Xtract Universal
 # <https://help.theobald-software.com/en/xtract-universal/advanced-techniques/metadata-access-via-http-json#list-of-extractions-with-a-specific-destination-type>
-DESTINATION_TYPES = typing.Literal[
+DESTINATION_TYPES = [
     "Unknown",
     "Alteryx",
     "AlteryxConnect",
@@ -85,7 +84,7 @@ DESTINATION_TYPES = typing.Literal[
 ]
 
 
-def get_extractions(filterDestionationType: DESTINATION_TYPES = None) -> list[dict]:
+def get_extractions(filterDestionationType=None):
 
     meta_url = f"{XU_BASE_URL}/config/extractions/"
 
@@ -103,7 +102,7 @@ def get_extractions(filterDestionationType: DESTINATION_TYPES = None) -> list[di
     return extractions
 
 
-def get_column_list(extraction_name: str) -> list[dict]:
+def get_column_list(extraction_name):
 
     # http://localhost:8065/config/extractions/VBAK/result-columns
     meta_url = f"{XU_BASE_URL}/config/extractions/{extraction_name}/result-columns"
@@ -117,7 +116,7 @@ def get_column_list(extraction_name: str) -> list[dict]:
     return columns
 
 
-def generate_rsd(extraction: dict, forceHttpJson: bool = False) -> None:
+def generate_rsd(extraction, forceHttpJson=False):
 
     extraction_name = extraction.get("name")
     target_file_name = Path(RSD_TARGET_FOLDER, extraction_name + ".rsd")
