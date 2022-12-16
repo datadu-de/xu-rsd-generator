@@ -136,11 +136,13 @@ def get_parameters(extraction_name):
     return parameters
 
 
-def generate_rsd(extraction, forceHttpJson=False):
+def generate_rsd(extraction, forceHttpJsonDestination=False):
 
     extraction_name = extraction.get("name")
     target_file_name = Path(RSD_TARGET_FOLDER, extraction_name + ".rsd")
-    extraction_url = f"""{XU_BASE_URL}/?name={extraction_name}{"&destination=http-json" if forceHttpJson else ""}"""
+    extraction_url = (
+        f"""{XU_BASE_URL}/?name={extraction_name}{"&destination=http-json" if forceHttpJsonDestination else ""}"""
+    )
 
     # read template RSD
     template_tree = ET.parse(RSD_TEMPLATE)
@@ -223,7 +225,7 @@ def main():
     extractions = get_extractions(filterDestionationType=FILTER_DESTINATION_TYPE)
 
     for e in extractions:
-        generate_rsd(e, forceHttpJson=FORCE_HTTP_JSON_DESTINATION)
+        generate_rsd(e, forceHttpJsonDestination=FORCE_HTTP_JSON_DESTINATION)
 
 
 if __name__ == "__main__":
