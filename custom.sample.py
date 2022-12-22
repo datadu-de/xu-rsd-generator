@@ -7,6 +7,9 @@ def main():
     extractions = get_extractions(filterDestionationType=FILTER_DESTINATION_TYPE)
 
     for e in extractions:
+
+        # insert your custom logic here
+
         generate_rsd(e, forceHttpJsonDestination=FORCE_HTTP_JSON_DESTINATION)
 
 
