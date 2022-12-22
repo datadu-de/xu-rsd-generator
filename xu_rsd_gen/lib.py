@@ -9,7 +9,8 @@ from dotenv import load_dotenv
 
 logging.basicConfig(filename="debug.log", filemode="w", level=logging.DEBUG)
 
-load_dotenv(".env")
+load_dotenv(Path("../.env"))
+
 
 XU_BASE_URL = os.getenv("XU_BASE_URL", "http://localhost:8065")
 RSD_TEMPLATE = os.getenv("RSD_TEMPLATE", "TEMPLATE_JSON.rsd")
@@ -46,7 +47,6 @@ TYPE_MAPPING = {
     "ConvertedDate": "datetime",
     "Time": "datetime",
 }
-
 
 # destination types available in Xtract Universal
 # <https://help.theobald-software.com/en/xtract-universal/advanced-techniques/metadata-access-via-http-json#list-of-extractions-with-a-specific-destination-type>
@@ -87,7 +87,7 @@ DESTINATION_TYPES = [
 ]
 
 
-def get_extractions(filterDestionationType=None):
+def get_extractions(filterDestionationType=FILTER_DESTINATION_TYPE):
 
     meta_url = f"{XU_BASE_URL}/config/extractions/"
 
@@ -137,7 +137,7 @@ def get_parameters(extraction_name):
     return parameters
 
 
-def generate_rsd(extraction, forceDestinationType=False):
+def generate_rsd(extraction, forceDestinationType=FORCE_DESTINATION_TYPE):
 
     extraction_name = extraction.get("name")
     target_file_name = Path(RSD_TARGET_FOLDER, extraction_name + ".rsd")
@@ -218,16 +218,3 @@ def generate_rsd(extraction, forceDestinationType=False):
     template_tree.write(
         target_file_name,
     )
-
-
-def main():
-
-    # set filterDestionationType to None to create RSD for *all* extractions
-    extractions = get_extractions(filterDestionationType=FILTER_DESTINATION_TYPE)
-
-    for e in extractions:
-        generate_rsd(e, forceDestinationType=FORCE_DESTINATION_TYPE)
-
-
-if __name__ == "__main__":
-    main()
