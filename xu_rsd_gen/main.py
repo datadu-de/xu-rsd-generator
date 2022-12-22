@@ -1,11 +1,4 @@
-import logging
-
-from dotenv import load_dotenv
 from lib import generate_rsd, get_extractions
-
-logging.basicConfig(filename="debug.log", filemode="w", level=logging.DEBUG)
-
-load_dotenv("../.env")
 
 
 def main():

@@ -1,5 +1,4 @@
-from .main import generate_rsd, get_extractions
-from .lib import FILTER_DESTINATION_TYPE, FORCE_DESTINATION_TYPE
+from lib import FILTER_DESTINATION_TYPE, FORCE_DESTINATION_TYPE, generate_rsd, get_extractions
 
 
 def main():

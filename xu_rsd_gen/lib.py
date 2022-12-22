@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 
 logging.basicConfig(filename="debug.log", filemode="w", level=logging.DEBUG)
 
-load_dotenv(Path("../.env"))
+load_dotenv()
 
 
 XU_BASE_URL = os.getenv("XU_BASE_URL", "http://localhost:8065")
@@ -18,6 +18,10 @@ RSD_TARGET_FOLDER = os.getenv("RSD_TARGET_FOLDER", "./OUTPUT")
 FILTER_DESTINATION_TYPE = os.getenv("FILTER_DESTINATION_TYPE", "HTTPJSON")
 DESTINATION_TYPE_PARAMETER = os.getenv("DESTINATION_TYPE_PARAMETER", "http-json")
 FORCE_DESTINATION_TYPE = os.getenv("FORCE_DESTINATION_TYPE", "False").lower() in ("true", "1")
+
+k, v = "", ""
+for k, v in globals().items():
+    logging.debug((k, v))
 
 
 # supoprted data types by CData:
