@@ -19,9 +19,19 @@ FILTER_DESTINATION_TYPE = os.getenv("FILTER_DESTINATION_TYPE", "HTTPJSON")
 DESTINATION_TYPE_PARAMETER = os.getenv("DESTINATION_TYPE_PARAMETER", "http-json")
 FORCE_DESTINATION_TYPE = os.getenv("FORCE_DESTINATION_TYPE", "False").lower() in ("true", "1")
 
+required_globals = [
+    "XU_BASE_URL",
+    "RSD_TEMPLATE",
+    "RSD_TARGET_FOLDER",
+    "FILTER_DESTINATION_TYPE",
+    "DESTINATION_TYPE_PARAMETER",
+    "FORCE_DESTINATION_TYPE",
+]
+
 k, v = "", ""
 for k, v in globals().items():
-    logging.debug((k, v))
+    if k in required_globals:
+        logging.debug((k, v))
 
 
 # supoprted data types by CData:
