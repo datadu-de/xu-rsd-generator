@@ -141,8 +141,8 @@ def generate_rsd(extraction, forceDestinationType=False):
 
     extraction_name = extraction.get("name")
     target_file_name = Path(RSD_TARGET_FOLDER, extraction_name + ".rsd")
-    extraction_url = (
-        f"""{XU_BASE_URL}/?name={extraction_name}{"&destination=http-json" if forceDestinationType else ""}"""
+    extraction_url = f"{XU_BASE_URL}/?name={extraction_name}" + (
+        f"""&destination={DESTINATION_TYPE_PARAMETER}""" if forceDestinationType else ""
     )
 
     # read template RSD
@@ -206,9 +206,9 @@ def generate_rsd(extraction, forceDestinationType=False):
     # restore xs namespace due to malformed XML structure of RSD format
     template_tree.getroot().attrib["xmlns:xs"] = namespaces.get("xs")
 
-    try:
+    if hasattr(ET, "indent"):
         ET.indent(template_tree)
-    except AttributeError:
+    else:
         logging.warning(
             f"""Could not apply XML intendation to "{target_file_name}". (only available with Python >= 3.9)"""
         )
