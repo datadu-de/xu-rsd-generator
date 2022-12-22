@@ -12,10 +12,11 @@ logging.basicConfig(filename="debug.log", filemode="w", level=logging.DEBUG)
 load_dotenv(".env")
 
 XU_BASE_URL = os.getenv("XU_BASE_URL", "http://localhost:8065")
-RSD_TEMPLATE = os.getenv("RSD_TEMPLATE", "TEMPLATE.rsd")
+RSD_TEMPLATE = os.getenv("RSD_TEMPLATE", "TEMPLATE_JSON.rsd")
 RSD_TARGET_FOLDER = os.getenv("RSD_TARGET_FOLDER", "./OUTPUT")
 FILTER_DESTINATION_TYPE = os.getenv("FILTER_DESTINATION_TYPE", "HTTPJSON")
-FORCE_HTTP_JSON_DESTINATION = os.getenv("FORCE_HTTP_JSON_DESTINATION", "False").lower() in ("true", "1")
+DESTINATION_TYPE_PARAMETER = os.getenv("DESTINATION_TYPE_PARAMETER", "http-json")
+FORCE_DESTINATION_TYPE = os.getenv("FORCE_DESTINATION_TYPE", "False").lower() in ("true", "1")
 
 
 # supoprted data types by CData:
@@ -136,11 +137,13 @@ def get_parameters(extraction_name):
     return parameters
 
 
-def generate_rsd(extraction, forceHttpJson=False):
+def generate_rsd(extraction, forceDestinationType=False):
 
     extraction_name = extraction.get("name")
     target_file_name = Path(RSD_TARGET_FOLDER, extraction_name + ".rsd")
-    extraction_url = f"""{XU_BASE_URL}/?name={extraction_name}{"&destination=http-json" if forceHttpJson else ""}"""
+    extraction_url = (
+        f"""{XU_BASE_URL}/?name={extraction_name}{"&destination=http-json" if forceDestinationType else ""}"""
+    )
 
     # read template RSD
     template_tree = ET.parse(RSD_TEMPLATE)
@@ -223,7 +226,7 @@ def main():
     extractions = get_extractions(filterDestionationType=FILTER_DESTINATION_TYPE)
 
     for e in extractions:
-        generate_rsd(e, forceHttpJson=FORCE_HTTP_JSON_DESTINATION)
+        generate_rsd(e, forceDestinationType=FORCE_DESTINATION_TYPE)
 
 
 if __name__ == "__main__":
