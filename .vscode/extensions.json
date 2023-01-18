@@ -1,0 +1,7 @@
+{
+    "recommendations": [
+        "dotenv.dotenv-vscode",
+        "yzhang.markdown-all-in-one",
+        "ms-python.python"
+    ]
+}

@@ -15,5 +15,8 @@
     "python.formatting.blackArgs": [
         "--line-length",
         "119"
-    ]
+    ],
+    "files.associations": {
+        "*.rsd": "xml"
+    }
 }
