@@ -1,4 +1,4 @@
-from lib import generate_rsd, get_extractions
+from lib import generate_rsds, get_extractions
 
 
 def main():
@@ -7,7 +7,7 @@ def main():
     extractions = get_extractions()
 
     for e in extractions:
-        generate_rsd(e)
+        generate_rsds(e)
 
 
 if __name__ == "__main__":

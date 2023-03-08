@@ -1,3 +1,4 @@
+import datetime
 import json
 import logging
 import os
@@ -18,6 +19,14 @@ RSD_TARGET_FOLDER = os.getenv("RSD_TARGET_FOLDER", "./OUTPUT")
 FILTER_DESTINATION_TYPE = os.getenv("FILTER_DESTINATION_TYPE", "HTTPJSON")
 DESTINATION_TYPE_PARAMETER = os.getenv("DESTINATION_TYPE_PARAMETER", "http-json")
 FORCE_DESTINATION_TYPE = os.getenv("FORCE_DESTINATION_TYPE", "False").lower() in ("true", "1")
+DEFAULT_DAYS_SLIDING_WINDOW = int(os.getenv("DEFAULT_DAYS_SLIDING_WINDOW", 3))
+SLIDING_COLUMNS = json.loads(
+    os.getenv(
+        "SLIDING_COLUMNS",
+        '["AEDAT"]',
+    )
+)
+
 
 required_globals = [
     "XU_BASE_URL",
@@ -151,13 +160,40 @@ def get_parameters(extraction_name):
     return parameters
 
 
-def generate_rsd(extraction, forceDestinationType=FORCE_DESTINATION_TYPE):
+def generate_rsds(extraction, forceDestinationType=FORCE_DESTINATION_TYPE, slidingDays=DEFAULT_DAYS_SLIDING_WINDOW):
+    extraction_name = extraction.get("name")
+    columns = get_column_list(extraction_name)
+
+    extraction_base_url = f"{XU_BASE_URL}/?name={extraction_name}" + (
+        f"&destination={DESTINATION_TYPE_PARAMETER}" if forceDestinationType else ""
+    )
+
+    extraction_urls = {Path(RSD_TARGET_FOLDER, extraction_name + ".rsd"): extraction_base_url}
+
+    for c in columns:
+        column_name = c.get("name")
+        if column_name in SLIDING_COLUMNS:
+            extraction_urls[
+                Path(RSD_TARGET_FOLDER, extraction_name + f"_sliding_{slidingDays}days.rsd")
+            ] = extraction_base_url + (
+                "".join(
+                    (
+                        f"""&where={column_name}%20%3E=%20%27""",
+                        (datetime.date.today() - datetime.timedelta(slidingDays)).strftime(r"%Y%m%d"),
+                        r"%27",
+                    )
+                )
+            )
+            break
+
+    for filename, extraction_url in extraction_urls.items():
+        generate_rsd(extraction, filename, extraction_url, forceDestinationType=FORCE_DESTINATION_TYPE)
+
+
+def generate_rsd(extraction, filename, extraction_url, forceDestinationType=FORCE_DESTINATION_TYPE):
 
     extraction_name = extraction.get("name")
-    target_file_name = Path(RSD_TARGET_FOLDER, extraction_name + ".rsd")
-    extraction_url = f"{XU_BASE_URL}/?name={extraction_name}" + (
-        f"""&destination={DESTINATION_TYPE_PARAMETER}""" if forceDestinationType else ""
-    )
+    columns = get_column_list(extraction_name)
 
     # read template RSD
     template_tree = ET.parse(RSD_TEMPLATE)
@@ -179,8 +215,6 @@ def generate_rsd(extraction, forceDestinationType=FORCE_DESTINATION_TYPE):
     field_section.attrib["desc"] = f"""Type: {extraction.get("type")}, Source: {extraction.get("source")}"""
 
     field_section.attrib["xmlns:other"] = "http://apiscript.com/ns?v1"
-
-    columns = get_column_list(extraction_name)
 
     for c in columns:
 
@@ -223,12 +257,10 @@ def generate_rsd(extraction, forceDestinationType=FORCE_DESTINATION_TYPE):
     if hasattr(ET, "indent"):
         ET.indent(template_tree)
     else:
-        logging.warning(
-            f"""Could not apply XML intendation to "{target_file_name}". (only available with Python >= 3.9)"""
-        )
+        logging.warning(f"""Could not apply XML intendation to "{filename}". (only available with Python >= 3.9)""")
 
-    target_file_name.parent.mkdir(parents=True, exist_ok=True)
+    filename.parent.mkdir(parents=True, exist_ok=True)
 
     template_tree.write(
-        target_file_name,
+        filename,
     )

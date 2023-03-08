@@ -1,4 +1,4 @@
-from lib import FILTER_DESTINATION_TYPE, FORCE_DESTINATION_TYPE, generate_rsd, get_extractions
+from lib import FILTER_DESTINATION_TYPE, FORCE_DESTINATION_TYPE, generate_rsds, get_extractions
 
 
 def main():
@@ -10,7 +10,7 @@ def main():
 
         # insert your custom logic here
 
-        generate_rsd(e, forceHttpJsonDestination=FORCE_DESTINATION_TYPE)
+        generate_rsds(e, forceHttpJsonDestination=FORCE_DESTINATION_TYPE)
 
 
 if __name__ == "__main__":
