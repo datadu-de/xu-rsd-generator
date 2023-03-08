@@ -5,4 +5,4 @@ REM install requirements
 .\.venv\Scripts\pip.exe install -r requirements.txt
 
 REM create sample .env file
-COPY ".env.json-example" "xu_rsd_gen\.env"
+COPY ".env.example" "xu_rsd_gen\.env"
