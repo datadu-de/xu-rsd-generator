@@ -160,36 +160,6 @@ def get_parameters(extraction_name):
     return parameters
 
 
-def generate_rsds(extraction, forceDestinationType=FORCE_DESTINATION_TYPE, slidingDays=DEFAULT_DAYS_SLIDING_WINDOW):
-    extraction_name = extraction.get("name")
-    columns = get_column_list(extraction_name)
-
-    extraction_base_url = f"{XU_BASE_URL}/?name={extraction_name}" + (
-        f"&destination={DESTINATION_TYPE_PARAMETER}" if forceDestinationType else ""
-    )
-
-    extraction_urls = {Path(RSD_TARGET_FOLDER, extraction_name + ".rsd"): extraction_base_url}
-
-    for c in columns:
-        column_name = c.get("name")
-        if column_name in SLIDING_COLUMNS:
-            extraction_urls[
-                Path(RSD_TARGET_FOLDER, extraction_name + f"_sliding_{slidingDays}days.rsd")
-            ] = extraction_base_url + (
-                "".join(
-                    (
-                        f"""&where={column_name}%20%3E=%20%27""",
-                        (datetime.date.today() - datetime.timedelta(slidingDays)).strftime(r"%Y%m%d"),
-                        r"%27",
-                    )
-                )
-            )
-            break
-
-    for filename, extraction_url in extraction_urls.items():
-        generate_rsd(extraction, filename, extraction_url, forceDestinationType=FORCE_DESTINATION_TYPE)
-
-
 def generate_rsd(extraction, filename, extraction_url, forceDestinationType=FORCE_DESTINATION_TYPE):
 
     extraction_name = extraction.get("name")
@@ -264,3 +234,33 @@ def generate_rsd(extraction, filename, extraction_url, forceDestinationType=FORC
     template_tree.write(
         filename,
     )
+
+
+def generate_rsds(extraction, forceDestinationType=FORCE_DESTINATION_TYPE, slidingDays=DEFAULT_DAYS_SLIDING_WINDOW):
+    extraction_name = extraction.get("name")
+    columns = get_column_list(extraction_name)
+
+    extraction_base_url = f"{XU_BASE_URL}/?name={extraction_name}" + (
+        f"&destination={DESTINATION_TYPE_PARAMETER}" if forceDestinationType else ""
+    )
+
+    extraction_urls = {Path(RSD_TARGET_FOLDER, extraction_name + ".rsd"): extraction_base_url}
+
+    for c in columns:
+        column_name = c.get("name")
+        if column_name in SLIDING_COLUMNS:
+            extraction_urls[
+                Path(RSD_TARGET_FOLDER, extraction_name + f"_sliding_{slidingDays}days.rsd")
+            ] = extraction_base_url + (
+                "".join(
+                    (
+                        f"""&where={column_name}%20%3E=%20%27""",
+                        (datetime.date.today() - datetime.timedelta(slidingDays)).strftime(r"%Y%m%d"),
+                        r"%27",
+                    )
+                )
+            )
+            break
+
+    for filename, extraction_url in extraction_urls.items():
+        generate_rsd(extraction, filename, extraction_url, forceDestinationType=FORCE_DESTINATION_TYPE)
