@@ -14,6 +14,8 @@ To extract data from SAP using [TimeXtender](https://timextender.com), the best 
 
 To make the [extractions](https://help.theobald-software.com/en/xtract-universal/getting-started/define-a-table-extraction) created in Xtract Universal known to the ODX, RSD files are needed, that point ODX to the right URL, list the [columns and data types](https://cdn.cdata.com/help/DWH/ado/pg_APIinfo.htm#input-output-and-column-parameters) available in each table.
 
+This [knowledge base article explains the whole setup process](https://support.timextender.com/data-sources-112/theobald-xtract-universal-839).
+
 This RSD-generator helps to make the process of generating these RSD files easier - by reading the metadata provided by Xtract Universal and enhancing a given rsd template with the schema metadata.
 
 ![Xtract Universal integration with TimeXtender ODX schematic](docs/assets/Xtract-Universal-with-TimeXtender-ODX-integration.png)
