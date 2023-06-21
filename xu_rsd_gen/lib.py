@@ -255,7 +255,6 @@ def generate_rsds(extraction, forceDestinationType=FORCE_DESTINATION_TYPE, slidi
                     )
                 )
             )
-            break
 
     for filename, extraction_url in extraction_urls.items():
         generate_rsd(extraction, filename, extraction_url, forceDestinationType=FORCE_DESTINATION_TYPE)
