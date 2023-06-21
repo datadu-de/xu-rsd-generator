@@ -111,7 +111,6 @@ DESTINATION_TYPES = [
 
 
 def get_extractions(filterDestionationType=FILTER_DESTINATION_TYPE):
-
     meta_url = f"{XU_BASE_URL}/config/extractions/"
 
     if filterDestionationType is not None and filterDestionationType in DESTINATION_TYPES:
@@ -131,7 +130,6 @@ def get_extractions(filterDestionationType=FILTER_DESTINATION_TYPE):
 
 
 def get_column_list(extraction_name):
-
     # http://localhost:8065/config/extractions/VBAK/result-columns
     meta_url = f"{XU_BASE_URL}/config/extractions/{extraction_name}/result-columns"
 
@@ -145,7 +143,6 @@ def get_column_list(extraction_name):
 
 
 def get_parameters(extraction_name):
-
     # http://localhost:8065/config/extractions/plants/parameters/
     meta_url = f"{XU_BASE_URL}/config/extractions/{extraction_name}/parameters"
 
@@ -161,7 +158,6 @@ def get_parameters(extraction_name):
 
 
 def generate_rsd(extraction, filename, extraction_url, forceDestinationType=FORCE_DESTINATION_TYPE):
-
     extraction_name = extraction.get("name")
     columns = get_column_list(extraction_name)
 
@@ -187,7 +183,6 @@ def generate_rsd(extraction, filename, extraction_url, forceDestinationType=FORC
     field_section.attrib["xmlns:other"] = "http://apiscript.com/ns?v1"
 
     for c in columns:
-
         attributes = {
             "name": c.get("name"),
             "xs:type": TYPE_MAPPING.get(c.get("type"), "unknown"),
@@ -250,7 +245,7 @@ def generate_rsds(extraction, forceDestinationType=FORCE_DESTINATION_TYPE, slidi
         column_name = c.get("name")
         if column_name in SLIDING_COLUMNS:
             extraction_urls[
-                Path(RSD_TARGET_FOLDER, extraction_name + f"_sliding_{slidingDays}days.rsd")
+                Path(RSD_TARGET_FOLDER, extraction_name + f"_sliding_{column_name}_{slidingDays}days.rsd")
             ] = extraction_base_url + (
                 "".join(
                     (
