@@ -111,7 +111,7 @@ DESTINATION_TYPES = [
 
 
 def get_extractions(filterDestionationType=FILTER_DESTINATION_TYPE):
-    meta_url = f"{XU_BASE_URL}/config/extractions/"
+    meta_url = f"{XU_BASE_URL}"
 
     if filterDestionationType is not None and filterDestionationType in DESTINATION_TYPES:
         params = {"destinationType": filterDestionationType}
