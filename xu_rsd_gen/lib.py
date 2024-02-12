@@ -158,7 +158,7 @@ def get_parameters(extraction_name):
 
 
 def generate_rsd(extraction, filename, extraction_url, forceDestinationType=FORCE_DESTINATION_TYPE):
-    extraction_name = extraction.get("name")
+    extraction_name = extraction.get("name")[0]
     columns = get_column_list(extraction_name)
 
     # read template RSD
@@ -232,7 +232,7 @@ def generate_rsd(extraction, filename, extraction_url, forceDestinationType=FORC
 
 
 def generate_rsds(extraction, forceDestinationType=FORCE_DESTINATION_TYPE, slidingDays=DEFAULT_DAYS_SLIDING_WINDOW):
-    extraction_name = extraction.get("name")
+    extraction_name = extraction.get("name")[0]
     columns = get_column_list(extraction_name)
 
     extraction_base_url = f"{XU_BASE_URL}/?name={extraction_name}" + (
