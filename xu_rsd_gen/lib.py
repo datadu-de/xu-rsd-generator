@@ -20,6 +20,11 @@ FILTER_DESTINATION_TYPE = os.getenv("FILTER_DESTINATION_TYPE", "HTTPJSON")
 DESTINATION_TYPE_PARAMETER = os.getenv("DESTINATION_TYPE_PARAMETER", "http-json")
 FORCE_DESTINATION_TYPE = os.getenv("FORCE_DESTINATION_TYPE", "False").lower() in ("true", "1")
 DEFAULT_DAYS_SLIDING_WINDOW = int(os.getenv("DEFAULT_DAYS_SLIDING_WINDOW", 3))
+
+# logging variables to output progress
+RUN_EXTRACTIONS = 0
+TOTAL_EXTRACTIONS = 0
+
 SLIDING_COLUMNS = json.loads(
     os.getenv(
         "SLIDING_COLUMNS",
@@ -46,6 +51,8 @@ for k, v in globals().items():
 # supoprted data types by CData:
 # string, int, double, datetime, and boolean
 #
+# decimals are implicitly supported by specifying columnsize (precision) and decimaldigits(scale)
+#
 # data types by Xtract Universal:
 # Byte, Short, Int, Long, Double, Decimal, NumericString, StringLengthMax,
 # StringLengthUnknown, ByteArrayLengthExact, ByteArrayLengthMax,
@@ -59,7 +66,7 @@ TYPE_MAPPING = {
     "Int": "int",
     "Long": "int",
     "Double": "double",
-    "Decimal": "double",
+    "Decimal": "decimal",
     "NumericString": "string",
     "StringLengthMax": "string",
     "StringLengthUnknown": "string",
@@ -125,6 +132,12 @@ def get_extractions(filterDestionationType=FILTER_DESTINATION_TYPE):
     extractions = json.loads(content).get("extractions")
 
     logging.debug(extractions)
+
+    # log extractions found:
+    global TOTAL_EXTRACTIONS
+    TOTAL_EXTRACTIONS = len(extractions)
+    print("Extractions Found: " + str(TOTAL_EXTRACTIONS))
+    
 
     return extractions
 
@@ -256,5 +269,15 @@ def generate_rsds(extraction, forceDestinationType=FORCE_DESTINATION_TYPE, slidi
                 )
             )
 
+    # log extraction generation:
+    global RUN_EXTRACTIONS
+    RUN_EXTRACTIONS = RUN_EXTRACTIONS + 1
+    slidingCounter = 0    
+    
     for filename, extraction_url in extraction_urls.items():
+
+        # print log to io:
+        print("(" + str(RUN_EXTRACTIONS) + "_" + str(slidingCounter) + "/" + str(TOTAL_EXTRACTIONS) + ") " + "\tGenerating RSD for: " + extraction_name)
+        slidingCounter += 1
+        
         generate_rsd(extraction, filename, extraction_url, forceDestinationType=FORCE_DESTINATION_TYPE)
