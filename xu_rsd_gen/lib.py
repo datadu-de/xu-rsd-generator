@@ -277,7 +277,7 @@ def generate_rsds(extraction, forceDestinationType=FORCE_DESTINATION_TYPE, slidi
     for filename, extraction_url in extraction_urls.items():
 
         # print log to io:
-        print("(" + str(RUN_EXTRACTIONS)+"_"+str(slidingCounter)+"/" + str(TOTAL_EXTRACTIONS) + ") " + "\tGenerating RSD for: " + extraction_name)
+        print("(" + str(RUN_EXTRACTIONS) + "_" + str(slidingCounter) + "/" + str(TOTAL_EXTRACTIONS) + ") " + "\tGenerating RSD for: " + extraction_name)
         slidingCounter += 1
         
         generate_rsd(extraction, filename, extraction_url, forceDestinationType=FORCE_DESTINATION_TYPE)
