@@ -2,11 +2,18 @@
 
 ## Table of Contents
 
-1. [About](#about)
-2. [Getting Started](#getting-started)
+1. [Compatibility](#compatibility)
+2. [About](#about)
+3. [Getting Started](#getting-started)
    1. [Prerequisites](#prerequisites)
    2. [Installing](#installing)
-3. [Usage](#usage)
+4. [Usage](#usage)
+
+## Compatibility
+
+For Xtract Universal versions `6.3.0` to `6.3.4` download this version of the RSD generator utility: <https://github.com/datadu-de/xu-rsd-generator/archive/bb26400800051323e4ddffa19d73f3a7b0b57938.zip>
+
+**For all later and earlier versions, download the latest version of the RSD generator utility: <https://github.com/datadu-de/xu-rsd-generator/archive/refs/heads/main.zip>**
 
 ## About
 
