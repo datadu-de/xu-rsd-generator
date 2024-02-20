@@ -11,9 +11,9 @@
 
 ## Compatibility
 
-For Xtract Universal versions `6.3.0` to `6.3.4` download this version of the RSD generator utility: [Download](https://github.com/datadu-de/xu-rsd-generator/archive/bb26400800051323e4ddffa19d73f3a7b0b57938.zip)
+* Xtract Universal version `6.3.0` to `6.3.4`: [Download](https://github.com/datadu-de/xu-rsd-generator/archive/bb26400800051323e4ddffa19d73f3a7b0b57938.zip)
 
-**For all later and earlier versions, download the latest version of the RSD generator utility: [Download](https://github.com/datadu-de/xu-rsd-generator/archive/refs/heads/main.zip)**
+* **All other versions: [Download](https://github.com/datadu-de/xu-rsd-generator/archive/refs/heads/main.zip)**
 
 ## About
 
