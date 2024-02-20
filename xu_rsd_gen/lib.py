@@ -18,7 +18,10 @@ RSD_TEMPLATE = os.getenv("RSD_TEMPLATE", "TEMPLATE_JSON.rsd")
 RSD_TARGET_FOLDER = os.getenv("RSD_TARGET_FOLDER", "./OUTPUT")
 FILTER_DESTINATION_TYPE = os.getenv("FILTER_DESTINATION_TYPE", "HTTPJSON")
 DESTINATION_TYPE_PARAMETER = os.getenv("DESTINATION_TYPE_PARAMETER", "http-json")
-FORCE_DESTINATION_TYPE = os.getenv("FORCE_DESTINATION_TYPE", "False").lower() in ("true", "1")
+FORCE_DESTINATION_TYPE = os.getenv("FORCE_DESTINATION_TYPE", "False").lower() in (
+    "true",
+    "1",
+)
 DEFAULT_DAYS_SLIDING_WINDOW = int(os.getenv("DEFAULT_DAYS_SLIDING_WINDOW", 3))
 
 # logging variables to output progress
@@ -120,7 +123,10 @@ DESTINATION_TYPES = [
 def get_extractions(filterDestionationType=FILTER_DESTINATION_TYPE):
     meta_url = f"{XU_BASE_URL}"
 
-    if filterDestionationType is not None and filterDestionationType in DESTINATION_TYPES:
+    if (
+        filterDestionationType is not None
+        and filterDestionationType in DESTINATION_TYPES
+    ):
         params = {"destinationType": filterDestionationType}
     else:
         params = {}
@@ -137,7 +143,6 @@ def get_extractions(filterDestionationType=FILTER_DESTINATION_TYPE):
     global TOTAL_EXTRACTIONS
     TOTAL_EXTRACTIONS = len(extractions)
     print("Extractions Found: " + str(TOTAL_EXTRACTIONS))
-    
 
     return extractions
 
@@ -170,20 +175,27 @@ def get_parameters(extraction_name):
     return parameters
 
 
-def generate_rsd(extraction, filename, extraction_url, forceDestinationType=FORCE_DESTINATION_TYPE):
-    extraction_name = extraction.get("name")[0]
+def generate_rsd(
+    extraction, filename, extraction_url, forceDestinationType=FORCE_DESTINATION_TYPE
+):
+    extraction_name = extraction.get("name")
     columns = get_column_list(extraction_name)
 
     # read template RSD
     template_tree = ET.parse(RSD_TEMPLATE)
 
-    namespaces = {"api": "http://apiscript.com/ns?v1", "xs": "http://www.w3.org/2001/XMLSchema"}
+    namespaces = {
+        "api": "http://apiscript.com/ns?v1",
+        "xs": "http://www.w3.org/2001/XMLSchema",
+    }
 
     for k, v in namespaces.items():
         ET.register_namespace(k, v)
 
     # set extraction URL
-    template_tree.find(".//api:set[@attr='URI']", namespaces).attrib["value"] = extraction_url
+    template_tree.find(".//api:set[@attr='URI']", namespaces).attrib[
+        "value"
+    ] = extraction_url
 
     # prepare field section to look like this:
     # <api:info title="BSEG" desc="Generated schema file."
@@ -191,7 +203,9 @@ def generate_rsd(extraction, filename, extraction_url, forceDestinationType=FORC
     field_section = template_tree.find(".//api:info", namespaces)
     field_section.clear()
     field_section.attrib["title"] = extraction_name
-    field_section.attrib["desc"] = f"""Type: {extraction.get("type")}, Source: {extraction.get("source")}"""
+    field_section.attrib["desc"] = (
+        f"""Type: {extraction.get("type")}, Source: {extraction.get("source")}"""
+    )
 
     field_section.attrib["xmlns:other"] = "http://apiscript.com/ns?v1"
 
@@ -235,7 +249,9 @@ def generate_rsd(extraction, filename, extraction_url, forceDestinationType=FORC
     if hasattr(ET, "indent"):
         ET.indent(template_tree)
     else:
-        logging.warning(f"""Could not apply XML intendation to "{filename}". (only available with Python >= 3.9)""")
+        logging.warning(
+            f"""Could not apply XML intendation to "{filename}". (only available with Python >= 3.9)"""
+        )
 
     filename.parent.mkdir(parents=True, exist_ok=True)
 
@@ -244,26 +260,37 @@ def generate_rsd(extraction, filename, extraction_url, forceDestinationType=FORC
     )
 
 
-def generate_rsds(extraction, forceDestinationType=FORCE_DESTINATION_TYPE, slidingDays=DEFAULT_DAYS_SLIDING_WINDOW):
-    extraction_name = extraction.get("name")[0]
+def generate_rsds(
+    extraction,
+    forceDestinationType=FORCE_DESTINATION_TYPE,
+    slidingDays=DEFAULT_DAYS_SLIDING_WINDOW,
+):
+    extraction_name = extraction.get("name")
     columns = get_column_list(extraction_name)
 
     extraction_base_url = f"{XU_BASE_URL}/?name={extraction_name}" + (
         f"&destination={DESTINATION_TYPE_PARAMETER}" if forceDestinationType else ""
     )
 
-    extraction_urls = {Path(RSD_TARGET_FOLDER, extraction_name + ".rsd"): extraction_base_url}
+    extraction_urls = {
+        Path(RSD_TARGET_FOLDER, extraction_name + ".rsd"): extraction_base_url
+    }
 
     for c in columns:
         column_name = c.get("name")
         if column_name in SLIDING_COLUMNS:
             extraction_urls[
-                Path(RSD_TARGET_FOLDER, extraction_name + f"_sliding_{column_name}_{slidingDays}days.rsd")
+                Path(
+                    RSD_TARGET_FOLDER,
+                    extraction_name + f"_sliding_{column_name}_{slidingDays}days.rsd",
+                )
             ] = extraction_base_url + (
                 "".join(
                     (
                         f"""&where={column_name}%20%3E=%20%27""",
-                        (datetime.date.today() - datetime.timedelta(slidingDays)).strftime(r"%Y%m%d"),
+                        (
+                            datetime.date.today() - datetime.timedelta(slidingDays)
+                        ).strftime(r"%Y%m%d"),
                         r"%27",
                     )
                 )
@@ -272,12 +299,27 @@ def generate_rsds(extraction, forceDestinationType=FORCE_DESTINATION_TYPE, slidi
     # log extraction generation:
     global RUN_EXTRACTIONS
     RUN_EXTRACTIONS = RUN_EXTRACTIONS + 1
-    slidingCounter = 0    
-    
+    slidingCounter = 0
+
     for filename, extraction_url in extraction_urls.items():
 
         # print log to io:
-        print("(" + str(RUN_EXTRACTIONS) + "_" + str(slidingCounter) + "/" + str(TOTAL_EXTRACTIONS) + ") " + "\tGenerating RSD for: " + extraction_name)
+        print(
+            "("
+            + str(RUN_EXTRACTIONS)
+            + "_"
+            + str(slidingCounter)
+            + "/"
+            + str(TOTAL_EXTRACTIONS)
+            + ") "
+            + "\tGenerating RSD for: "
+            + extraction_name
+        )
         slidingCounter += 1
-        
-        generate_rsd(extraction, filename, extraction_url, forceDestinationType=FORCE_DESTINATION_TYPE)
+
+        generate_rsd(
+            extraction,
+            filename,
+            extraction_url,
+            forceDestinationType=FORCE_DESTINATION_TYPE,
+        )
