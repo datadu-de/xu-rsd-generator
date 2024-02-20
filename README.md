@@ -12,7 +12,6 @@
 ## Compatibility
 
 * Xtract Universal version `6.3.0` to `6.3.4`: [Download](https://github.com/datadu-de/xu-rsd-generator/archive/bb26400800051323e4ddffa19d73f3a7b0b57938.zip)
-
 * **All other versions: [Download](https://github.com/datadu-de/xu-rsd-generator/archive/refs/heads/main.zip)**
 
 ## About
