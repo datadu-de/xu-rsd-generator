@@ -48,7 +48,7 @@ required_globals = [
 k, v = "", ""
 for k, v in globals().items():
     if k in required_globals:
-        logging.debug((k, v))
+        logging.info((k, v))
 
 
 # supoprted data types by CData:
@@ -137,7 +137,7 @@ def get_extractions(filterDestionationType=FILTER_DESTINATION_TYPE):
     content = res.content.decode(res.apparent_encoding)
     extractions = json.loads(content).get("extractions")
 
-    logging.debug(extractions)
+    logging.info(f"{extractions=}")
 
     # log extractions found:
     global TOTAL_EXTRACTIONS
@@ -177,7 +177,7 @@ def get_parameters(extraction_name):
     content = res.content.decode(res.apparent_encoding)
     parameters = json.loads(content).get("custom")
 
-    logging.debug(parameters)
+    logging.info(f"{parameters=}")
 
     return parameters
 
@@ -234,8 +234,8 @@ def generate_rsd(
         if "description" in c.keys():
             attributes["description"] = c.get("description")
 
-        logging.debug(c)
-        logging.debug(attributes)
+        logging.info(f"{c=}")
+        logging.info(f"{attributes=}")
 
         field_section.append(
             ET.Element(
