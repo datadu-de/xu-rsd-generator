@@ -155,7 +155,14 @@ def get_column_list(extraction_name):
 
     res = requests.get(meta_url)
     content = res.content.decode(res.apparent_encoding)
+
+    logging.info(f"Raw columns of extraction '{extraction_name}'")
+    logging.info(f"{content=}")
+
     columns = json.loads(content).get("columns")
+
+    logging.info(f"Decoded columns of extraction '{extraction_name}'")
+    logging.info(f"{columns=}")
 
     return columns
 
