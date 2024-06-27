@@ -275,7 +275,7 @@ def generate_rsds(
     extraction_name = extraction.get("name")
     columns = get_column_list(extraction_name)
 
-    extraction_base_url = f"{XU_BASE_URL}/?name={extraction_name}" + (
+    extraction_base_url = f"{XU_BASE_URL}/run/{extraction_name}/?" + (
         f"&destination={DESTINATION_TYPE_PARAMETER}" if forceDestinationType else ""
     )
 
