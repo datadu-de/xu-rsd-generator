@@ -275,8 +275,8 @@ def generate_rsds(
     extraction_name = extraction.get("name")
     columns = get_column_list(extraction_name)
 
-    extraction_base_url = f"{XU_BASE_URL}/run/{extraction_name}/?" + (
-        f"&destination={DESTINATION_TYPE_PARAMETER}" if forceDestinationType else ""
+    extraction_base_url = f"{XU_BASE_URL}/run/{extraction_name}/" + (
+        f"?destination={DESTINATION_TYPE_PARAMETER}" if forceDestinationType else ""
     )
 
     extraction_urls = {
@@ -294,7 +294,8 @@ def generate_rsds(
             ] = extraction_base_url + (
                 "".join(
                     (
-                        f"""&where={column_name}%20%3E=%20%27""",
+                        "&" if "?" in extraction_base_url else "?",
+                        f"""where={column_name}%20%3E=%20%27""",
                         (
                             datetime.date.today() - datetime.timedelta(slidingDays)
                         ).strftime(r"%Y%m%d"),
