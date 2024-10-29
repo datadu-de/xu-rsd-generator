@@ -226,7 +226,11 @@ def generate_rsd(
         }
 
         if "length" in c.keys():
-            attributes["columnsize"] = str(c.get("length"))
+            attributes["columnsize"] = str(
+                c.get("length") * 2
+                if c.get("type") == "ByteArrayLengthExact"
+                else c.get("length")
+            )
 
         if "decimalsCount" in c.keys():
             attributes["decimaldigits"] = str(c.get("decimalsCount"))
